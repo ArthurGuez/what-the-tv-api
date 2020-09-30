@@ -1,0 +1,59 @@
+const express = require('express');
+
+const validator = require('../validators/users');
+const jwt = require('../utils/jwt');
+const usersController = require('../controllers/users');
+const ConflictError = require('../helpers/errors/conflict_error');
+const UnauthorizedError = require('../helpers/errors/unauthorized_error');
+const { OK, CREATED } = require('../helpers/status_codes');
+
+const router = express.Router();
+
+router.post('/signup', async (req, res) => {
+	const { username, email, name, password, newsletter } = req.body;
+
+	validator.validateNotNull(req.body);
+	validator.validateUsername(username);
+	validator.validatePassword(password);
+	validator.validateEmail(email);
+
+	const userFound = await usersController.checkUsername(username);
+
+	if (userFound === null) {
+		const newUser = await usersController.addUser(req.body);
+
+		res.status(CREATED).json({
+			username: newUser.username,
+			email: newUser.email,
+			name: newUser.name,
+		});
+	} else {
+		throw new ConflictError('Conflict', 'This username is already taken');
+	}
+});
+
+router.post('/signin', async (req, res) => {
+	const { username, password } = req.body;
+	const userFound = await usersController.findUserByUsername(username);
+
+	if (userFound) {
+		const userIdentified = await usersController.checkPassword(password, userFound.password);
+
+		if (userIdentified) {
+			res.status(OK).json({
+				token: jwt.genToken(userFound),
+				user: {
+					username: userFound.username,
+					email: userFound.email,
+					name: userFound.name,
+				},
+			});
+		} else {
+			throw new UnauthorizedError('Acces denied', 'Wrong username or password');
+		}
+	} else {
+		throw new UnauthorizedError('Acces denied', 'Wrong username or password');
+	}
+});
+
+module.exports = router;
