@@ -3,11 +3,9 @@ const { Op } = require('sequelize');
 
 const db = require('../models');
 
-const { Snapshot } = db;
+const { Snapshot, Show } = db;
 
 module.exports = {
-	addShow: (title, season, episode) => {},
-
 	findUnanswered: (answered) => {
 		return Snapshot.findOne({
 			where: { id: { [Op.notIn]: answered } },
@@ -18,9 +16,13 @@ module.exports = {
 	verifyGuess: async (snapId, guess) => {
 		const showTitle = (
 			await Snapshot.findByPk(snapId, {
-				attributes: ['title'],
+				attributes: [],
+				include: {
+					model: Show,
+					attributes: ['title'],
+				},
 			})
-		).title;
+		).Show.title;
 
 		let guessLow = guess.toLowerCase();
 
@@ -31,9 +33,7 @@ module.exports = {
 		}
 	},
 
-	findShow: (search) => {
-		const results = `https://api.themoviedb.org/3/search/tv?api_key=efbd136e89c83ddcf195e48a61327f4a&language=en-US&page=1&query=${search}&include_adult=false`;
-	},
-
-	findShowSnaps: (showId) => {},
+	// findShow: (search) => {
+	// 	const results = `https://api.themoviedb.org/3/search/tv?api_key=efbd136e89c83ddcf195e48a61327f4a&language=en-US&page=1&query=${search}&include_adult=false`;
+	// },
 };

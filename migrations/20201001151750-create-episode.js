@@ -16,6 +16,10 @@ module.exports = {
 					key: 'id',
 				},
 			},
+			title: {
+				allowNull: false,
+				type: Sequelize.STRING,
+			},
 			number: {
 				allowNull: false,
 				type: Sequelize.INTEGER,
@@ -23,10 +27,12 @@ module.exports = {
 			createdAt: {
 				allowNull: false,
 				type: Sequelize.DATE,
+				defaultValue: Sequelize.fn('NOW'),
 			},
 			updatedAt: {
 				allowNull: false,
 				type: Sequelize.DATE,
+				defaultValue: Sequelize.fn('NOW'),
 			},
 		});
 	},

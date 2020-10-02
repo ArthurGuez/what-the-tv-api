@@ -9,5 +9,6 @@ router.use(bodyParser.json());
 router.use('/users', require('./users'));
 router.use('/snapshots', require('./snapshots'));
 router.use('/shows', require('./shows'));
+router.use('/seasons', require('./seasons'));
 
 module.exports = router;

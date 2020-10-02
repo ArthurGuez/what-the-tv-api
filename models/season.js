@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
 				},
 			});
 
+			this.hasMany(models.Snapshot, {
+				foreignKey: {
+					name: 'seasonId',
+				},
+			});
+
 			this.belongsTo(models.Show, {
 				foreignKey: {
 					name: 'showId',

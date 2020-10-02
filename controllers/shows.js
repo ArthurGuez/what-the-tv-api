@@ -8,8 +8,8 @@ module.exports = {
 		return Show.create({
 			id: uuidv4(),
 			title: title.toLowerCase(),
+			addedBy: userId,
 			tmdbId,
-			userId,
 		});
 	},
 

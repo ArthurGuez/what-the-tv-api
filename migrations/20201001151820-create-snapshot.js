@@ -1,23 +1,50 @@
 'use strict';
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable('Shows', {
+		await queryInterface.createTable('Snapshots', {
 			id: {
 				allowNull: false,
 				primaryKey: true,
 				type: Sequelize.UUID,
 				defaultValue: Sequelize.UUIDV4,
 			},
-			title: {
+			path: {
 				allowNull: false,
 				type: Sequelize.STRING,
 			},
-			tmdbId: {
+			showId: {
 				allowNull: false,
-				type: Sequelize.INTEGER,
+				type: Sequelize.UUID,
+				references: {
+					model: 'Shows',
+					key: 'id',
+				},
 			},
-			addedBy: {
+			seasonId: {
 				allowNull: false,
+				type: Sequelize.UUID,
+				references: {
+					model: 'Seasons',
+					key: 'id',
+				},
+			},
+			episodeId: {
+				allowNull: false,
+				type: Sequelize.UUID,
+				references: {
+					model: 'Episodes',
+					key: 'id',
+				},
+			},
+			postedBy: {
+				allowNull: false,
+				type: Sequelize.UUID,
+				references: {
+					model: 'Users',
+					key: 'id',
+				},
+			},
+			firstSolvedBy: {
 				type: Sequelize.UUID,
 				references: {
 					model: 'Users',
@@ -37,6 +64,6 @@ module.exports = {
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable('Shows');
+		await queryInterface.dropTable('Snapshots');
 	},
 };

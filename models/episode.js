@@ -8,6 +8,12 @@ module.exports = (sequelize, DataTypes) => {
 		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
+			this.hasMany(models.Snapshot, {
+				foreignKey: {
+					name: 'episodeId',
+				},
+			});
+
 			this.belongsTo(models.Show, {
 				foreignKey: {
 					name: 'seasonId',
@@ -17,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	Episode.init(
 		{
-			seasonId: DataTypes.STRING,
+			seasonId: DataTypes.UUID,
+			title: DataTypes.STRING,
 			number: DataTypes.INTEGER,
 		},
 		{

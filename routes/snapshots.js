@@ -3,7 +3,7 @@ const express = require('express');
 const jwt = require('../utils/jwt');
 const snapsController = require('../controllers/snapshots');
 const usersController = require('../controllers/users');
-const { OK } = require('../helpers/status_codes');
+const { OK, NOT_FOUND } = require('../helpers/status_codes');
 
 const router = express.Router();
 
@@ -19,14 +19,18 @@ router.get('/random', jwt.verifyToken, async (req, res) => {
 			id: snapFound.id,
 			path: snapFound.path,
 		});
+	} else {
+		res.status(NOT_FOUND).json({
+			message: "You've found all our snapshots",
+		});
 	}
 });
 
-router.get('/:showId', async (req, res) => {
-	const { showId } = req.params;
+// router.get('/:showId', async (req, res) => {
+// 	const { showId } = req.params;
 
-	const snapsFound = await snapsController.findShowSnaps(showId);
-});
+// 	const snapsFound = await snapsController.findShowSnaps(showId);
+// });
 
 router.post('/:snapId/guess', jwt.verifyToken, async (req, res) => {
 	const { userId } = req.user;
@@ -46,7 +50,5 @@ router.post('/:snapId/guess', jwt.verifyToken, async (req, res) => {
 		});
 	}
 });
-
-router.post('/add', (req, res) => {});
 
 module.exports = router;

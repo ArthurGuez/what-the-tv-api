@@ -57,10 +57,10 @@ router.post('/signin', async (req, res) => {
 	}
 });
 
-router.delete('/delete', jwt.verifyToken, (req, res) => {
+router.delete('/delete', jwt.verifyToken, async (req, res) => {
 	const { userId } = req.user;
 
-	const userDeleted = usersController.deleteUser(userId);
+	const userDeleted = await usersController.deleteUser(userId);
 
 	if (!userDeleted) {
 		throw new NotFoundError();

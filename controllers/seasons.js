@@ -1,0 +1,14 @@
+const db = require('../models');
+const { v4: uuidv4 } = require('uuid');
+
+const { Season } = db;
+
+module.exports = {
+	addSeason: (showId, number) => {
+		return Season.create({
+			id: uuidv4(),
+			showId,
+			number,
+		});
+	},
+};
