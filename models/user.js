@@ -16,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
 					name: 'firstSolvedBy',
 				},
 			});
+
+			this.hasMany(models.Show, {
+				foreignKey: {
+					name: 'userId',
+				},
+			});
 		}
 	}
 	User.init(

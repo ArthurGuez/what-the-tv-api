@@ -13,6 +13,7 @@ module.exports = {
 				type: Sequelize.STRING,
 			},
 			showId: {
+				allowNull: false,
 				type: Sequelize.UUID,
 				references: {
 					model: 'Shows',
@@ -20,6 +21,7 @@ module.exports = {
 				},
 			},
 			postedBy: {
+				allowNull: false,
 				type: Sequelize.UUID,
 				references: {
 					model: 'Users',
