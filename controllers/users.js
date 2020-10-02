@@ -1,8 +1,8 @@
+const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 
 const db = require('../models');
-const users = require('../validators/users');
 
 const { User } = db;
 
@@ -11,7 +11,6 @@ module.exports = {
 		const hashedPassword = await bcrypt.hash(data.password, 10);
 
 		return User.create({
-			id: uuidv4(),
 			username: data.username,
 			email: data.email,
 			password: hashedPassword,
@@ -23,14 +22,27 @@ module.exports = {
 		});
 	},
 
+	deleteUser: (userId) => {
+		return User.destroy({
+			where: { id: userId },
+		});
+	},
+
+	addAnswer: (userId, snapId) => {
+		return User.update(
+			{ answered: Sequelize.fn('array_append', Sequelize.col('answered'), snapId) },
+			{ where: { id: userId } }
+		);
+	},
+
 	findUserByUsername: (username) => {
 		return User.findOne({
 			where: { username: username },
 		});
 	},
 
-	findAnswered: (id) => {
-		return User.findByPk(id, {
+	findAnswered: (userId) => {
+		return User.findByPk(userId, {
 			attributes: ['answered'],
 		});
 	},

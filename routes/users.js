@@ -4,6 +4,7 @@ const validator = require('../validators/users');
 const jwt = require('../utils/jwt');
 const usersController = require('../controllers/users');
 const ConflictError = require('../helpers/errors/conflict_error');
+const NotFoundError = require('../helpers/errors/not_found_error');
 const UnauthorizedError = require('../helpers/errors/unauthorized_error');
 const { OK, CREATED } = require('../helpers/status_codes');
 
@@ -53,6 +54,20 @@ router.post('/signin', async (req, res) => {
 		}
 	} else {
 		throw new UnauthorizedError('Acces denied', 'Wrong username or password');
+	}
+});
+
+router.delete('/delaccount', jwt.verifyToken, (req, res) => {
+	const { userId } = req.user;
+
+	const userDeleted = usersController.deleteUser(userId);
+
+	if (!userDeleted) {
+		throw new NotFoundError();
+	} else {
+		res.status(OK).json({
+			message: 'Your account has been deleted.',
+		});
 	}
 });
 
