@@ -13,6 +13,16 @@ module.exports = (sequelize, DataTypes) => {
 					name: 'showId',
 				},
 			});
+			this.belongsTo(models.Season, {
+				foreignKey: {
+					name: 'seasonId',
+				},
+			});
+			this.belongsTo(models.Episode, {
+				foreignKey: {
+					name: 'episodeId',
+				},
+			});
 			this.belongsTo(models.User, {
 				foreignKey: {
 					name: 'postedBy',
@@ -29,6 +39,8 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			path: DataTypes.STRING,
 			showId: DataTypes.UUID,
+			seasonId: DataTypes.UUID,
+			episodeId: DataTypes.UUID,
 			postedBy: DataTypes.UUID,
 			firstSolvedBy: DataTypes.UUID,
 		},

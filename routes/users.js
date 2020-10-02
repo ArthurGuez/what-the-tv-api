@@ -57,7 +57,7 @@ router.post('/signin', async (req, res) => {
 	}
 });
 
-router.delete('/delaccount', jwt.verifyToken, (req, res) => {
+router.delete('/delete', jwt.verifyToken, (req, res) => {
 	const { userId } = req.user;
 
 	const userDeleted = usersController.deleteUser(userId);

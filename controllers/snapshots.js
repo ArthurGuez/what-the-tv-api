@@ -1,5 +1,4 @@
-const { Op } = require('sequelize');
-const Sequelize = require('sequelize');
+const Sequelize, { Op } = require('sequelize');
 
 const db = require('../models');
 

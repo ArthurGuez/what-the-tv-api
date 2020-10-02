@@ -3,7 +3,6 @@ const express = require('express');
 const jwt = require('../utils/jwt');
 const snapsController = require('../controllers/snapshots');
 const usersController = require('../controllers/users');
-const users = require('../validators/users');
 const { OK } = require('../helpers/status_codes');
 
 const router = express.Router();
@@ -48,16 +47,6 @@ router.post('/:snapId/guess', jwt.verifyToken, async (req, res) => {
 	}
 });
 
-router.post('/show', (req, res) => {
-	const { search } = req.body;
-
-	const show = snapsController.findShow(search);
-});
-
-router.post('/addsnap', (req, res) => {
-	const { title, season, episode } = req.body;
-
-	const showAdded = snapsController.addShow(title, season, episode);
-});
+router.post('/add', (req, res) => {});
 
 module.exports = router;

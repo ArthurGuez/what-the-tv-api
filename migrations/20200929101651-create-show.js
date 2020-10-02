@@ -9,7 +9,12 @@ module.exports = {
 				defaultValue: Sequelize.UUIDV4,
 			},
 			title: {
+				allowNull: false,
 				type: Sequelize.STRING,
+			},
+			tmdbId: {
+				allowNull: false,
+				type: Sequelize.INTEGER,
 			},
 			createdAt: {
 				allowNull: false,
