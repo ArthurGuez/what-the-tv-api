@@ -10,10 +10,12 @@ router.post('/add', jwt.verifyToken, async (req, res) => {
 	const { showId, number } = req.body;
 
 	const seasonAdded = await seasonsController.addSeason(showId, number);
-
-	res.status(CREATED).json({
-		id: seasonAdded.id,
-	});
+	console.log('ici: ', seasonAdded[0]);
+	if (seasonAdded) {
+		res.status(CREATED).json({
+			id: seasonAdded.id,
+		});
+	}
 });
 
 module.exports = router;

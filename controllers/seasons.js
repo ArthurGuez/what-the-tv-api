@@ -5,10 +5,11 @@ const { Season } = db;
 
 module.exports = {
 	addSeason: (showId, number) => {
-		return Season.create({
-			id: uuidv4(),
-			showId,
-			number,
+		return Season.findOrCreate({
+			where: { showId, number },
+			defaults: {
+				id: uuidv4(),
+			},
 		});
 	},
 };
