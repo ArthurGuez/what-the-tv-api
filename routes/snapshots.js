@@ -26,11 +26,17 @@ router.get('/random', jwt.verifyToken, async (req, res) => {
 	}
 });
 
-// router.get('/:showId', async (req, res) => {
-// 	const { showId } = req.params;
+router.get('/:showId', async (req, res) => {
+	const { showId } = req.params;
 
-// 	const snapsFound = await snapsController.findShowSnaps(showId);
-// });
+	const snapsFound = await snapsController.findShowSnaps(showId);
+
+	if (snapsFound) {
+		res.status(OK).json({
+			path: 'tg',
+		});
+	}
+});
 
 router.post('/:snapId/guess', jwt.verifyToken, async (req, res) => {
 	const { userId } = req.user;
