@@ -1,19 +1,20 @@
 const express = require('express');
 
 const jwt = require('../utils/jwt');
-const seasonsController = require('../controllers/seasons');
+const episodesController = require('../controllers/episodes');
 const { CREATED } = require('../helpers/status_codes');
 
 const router = express.Router();
 
 router.post('/add', jwt.verifyToken, async (req, res) => {
-	const { showId, number } = req.body;
+	const { seasonId, number, title } = req.body;
 
-	const seasonAdded = await seasonsController.addSeason(showId, number);
+	const episodeAdded = await episodesController.addEpisode(seasonId, number, title);
 
-	if (seasonAdded) {
+	if (episodeAdded) {
 		res.status(CREATED).json({
-			id: seasonAdded[0].id,
+			id: episodeAdded[0].id,
+			title: episodeAdded[0].title,
 		});
 	}
 });
