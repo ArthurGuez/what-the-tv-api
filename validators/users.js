@@ -3,9 +3,9 @@ const BadRequestError = require('../helpers/errors/bad_request_error');
 module.exports = {
 	validateNotNull: (data) => {
 		const arrayData = Object.values(data);
-
 		for (const input of arrayData) {
-			if (!input) {
+			console.log(input);
+			if (input.length === 0) {
 				throw new BadRequestError('Bad Request', 'Missing parameter(s)');
 			}
 		}
