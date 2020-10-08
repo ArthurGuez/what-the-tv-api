@@ -37,6 +37,10 @@ module.exports = {
 				allowNull: false,
 				type: Sequelize.BOOLEAN,
 			},
+			newsletter: {
+				allowNull: false,
+				type: Sequelize.BOOLEAN,
+			},
 			answered: {
 				type: Sequelize.ARRAY(Sequelize.UUID),
 			},

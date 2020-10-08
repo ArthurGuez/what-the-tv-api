@@ -20,6 +20,7 @@ module.exports = {
 			country: data.country,
 			gender: data.gender,
 			newsletter: data.newsletter,
+			terms: data.terms,
 		});
 	},
 

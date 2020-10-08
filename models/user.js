@@ -34,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
 			country: DataTypes.STRING,
 			gender: DataTypes.STRING,
 			newsletter: DataTypes.BOOLEAN,
+			terms: DataTypes.BOOLEAN,
 			answered: DataTypes.ARRAY(DataTypes.UUID),
 		},
 		{
