@@ -37,7 +37,7 @@ module.exports = {
 				allowNull: false,
 				type: Sequelize.BOOLEAN,
 			},
-			newsletter: {
+			terms: {
 				allowNull: false,
 				type: Sequelize.BOOLEAN,
 			},
