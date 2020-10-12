@@ -10,11 +10,27 @@ const { OK, CREATED } = require('../helpers/status_codes');
 
 const router = express.Router();
 
+router.get('/me', jwt.verifyToken, async (req, res) => {
+	const { userId } = req.user;
+
+	const userFound = await usersController.findUserById(userId);
+
+	if (userFound) {
+		res.status(OK).json({
+			user: {
+				name: userFound.name,
+			},
+		});
+	} else {
+		throw new UnauthorizedError('Accès refusé', "Nous n'avons pas réussi à vous identifier");
+	}
+});
+
 router.post('/signup', async (req, res) => {
 	const { username, email, name, password, newsletter } = req.body;
 
-	validator.validateNotNull(req.body);
 	validator.validateUsername(username);
+	validator.validateName(name);
 	validator.validatePassword(password);
 	validator.validateEmail(email);
 

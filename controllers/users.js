@@ -37,6 +37,10 @@ module.exports = {
 		);
 	},
 
+	findUserById: (userId) => {
+		return User.findByPk(userId);
+	},
+
 	findUserByUsername: (username) => {
 		return User.findOne({
 			where: { username: username },
