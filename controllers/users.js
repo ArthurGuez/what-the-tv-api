@@ -15,7 +15,6 @@ module.exports = {
 			username: data.username,
 			email: data.email,
 			password: hashedPassword,
-			name: data.name,
 			birthday: data.birthday,
 			country: data.country,
 			gender: data.gender,

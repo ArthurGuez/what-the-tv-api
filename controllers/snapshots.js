@@ -6,6 +6,12 @@ const db = require('../models');
 const { Snapshot, Show } = db;
 
 module.exports = {
+	findSnap: (snapId) => {
+		return Snapshot.findByPk(snapId, {
+			attributes: ['path', 'postedBy', 'firstSolvedBy'],
+		});
+	},
+
 	findUnanswered: (answered) => {
 		return Snapshot.findOne({
 			where: { id: { [Op.notIn]: answered } },
@@ -33,6 +39,16 @@ module.exports = {
 		}
 	},
 
+	// Retourne les 4 snapshots les plus récents
+	findRecentSnaps: () => {
+		return Snapshot.findAll({
+			order: [['createdAt', 'DESC']],
+			attributes: ['path', 'id'],
+			limit: 4,
+		});
+	},
+
+	// Retourne les snapshots vieux d'au moins 30 jours pour une série donnée
 	findShowSnaps: (showId) => {
 		const thirtyDaysAgo = new Date(new Date().setDate(new Date().getDate() - 30));
 
@@ -41,8 +57,4 @@ module.exports = {
 			attributes: ['path'],
 		});
 	},
-
-	// A REPRENDRE DANS LE FRONT ---> findShow: (search) => {
-	// 	const results = `https://api.themoviedb.org/3/search/tv?api_key=efbd136e89c83ddcf195e48a61327f4a&language=en-US&page=1&query=${search}&include_adult=false`;
-	// },
 };

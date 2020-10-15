@@ -26,15 +26,35 @@ router.get('/random', jwt.verifyToken, async (req, res) => {
 	}
 });
 
+router.get('/mostrecent', jwt.verifyToken, async (req, res) => {
+	const recentSnapsFound = await snapsController.findRecentSnaps();
+
+	if (recentSnapsFound) {
+		res.status(OK).json(recentSnapsFound);
+	}
+});
+
+router.get('/:snapId', jwt.verifyToken, async (req, res) => {
+	const { snapId } = req.params;
+
+	const snapFound = await snapsController.findSnap(snapId);
+
+	if (snapFound) {
+		res.status(OK).json({
+			path: snapFound.path,
+			postedBy: snapFound.postedBy,
+			firstSolvedBy: snapFound.firstSolvedBy,
+		});
+	}
+});
+
 router.get('/:showId', async (req, res) => {
 	const { showId } = req.params;
 
 	const snapsFound = await snapsController.findShowSnaps(showId);
 
 	if (snapsFound) {
-		res.status(OK).json({
-			path: 'tg',
-		});
+		res.status(OK).json(snapsFound);
 	}
 });
 

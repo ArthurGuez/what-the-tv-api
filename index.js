@@ -14,9 +14,9 @@ const app = express();
 app.use(cors());
 
 app.use('/api', router);
-// app.use('*', (req, res, next) => {
-// 	throw new NotFoundError();
-// });
+app.use('*', (req, res, next) => {
+	throw new NotFoundError();
+});
 app.use(errorLogger);
 app.use(errorHandler);
 

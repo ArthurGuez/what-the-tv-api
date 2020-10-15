@@ -18,7 +18,7 @@ router.get('/me', jwt.verifyToken, async (req, res) => {
 	if (userFound) {
 		res.status(OK).json({
 			user: {
-				name: userFound.name,
+				username: userFound.username,
 			},
 		});
 	} else {
@@ -27,10 +27,9 @@ router.get('/me', jwt.verifyToken, async (req, res) => {
 });
 
 router.post('/signup', async (req, res) => {
-	const { username, email, name, password, newsletter } = req.body;
+	const { username, email, password, newsletter } = req.body;
 
 	validator.validateUsername(username);
-	validator.validateName(name);
 	validator.validatePassword(password);
 	validator.validateEmail(email);
 
@@ -42,7 +41,6 @@ router.post('/signup', async (req, res) => {
 		res.status(CREATED).json({
 			username: newUser.username,
 			email: newUser.email,
-			name: newUser.name,
 		});
 	} else {
 		throw new ConflictError('Conflict', 'This username is already taken');
@@ -62,7 +60,6 @@ router.post('/signin', async (req, res) => {
 				user: {
 					username: userFound.username,
 					email: userFound.email,
-					name: userFound.name,
 				},
 			});
 		} else {

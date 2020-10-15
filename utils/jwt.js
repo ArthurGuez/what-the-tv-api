@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const UnauthorizedError = require('../');
-const ForbiddenError = require('../../airbnb-clone-api/helpers/errors/forbidden_error');
+const UnauthorizedError = require('../helpers/errors/unauthorized_error');
+const ForbiddenError = require('../helpers/errors/forbidden_error');
 
 const secret = process.env.JWT_SIGN_SECRET;
 
