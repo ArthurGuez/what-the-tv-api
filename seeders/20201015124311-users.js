@@ -17,6 +17,14 @@ module.exports = {
 					newsletter: false,
 					terms: true,
 				},
+				{
+					id: '07edab7c-8980-4032-b04f-94b6da7d7787',
+					username: 'GordonCole',
+					password: hashedPwd,
+					email: 'g@g.fr',
+					newsletter: false,
+					terms: true,
+				},
 			],
 			{}
 		);

@@ -3,12 +3,25 @@ const { Op } = require('sequelize');
 
 const db = require('../models');
 
-const { Snapshot, Show } = db;
+const { Snapshot, Show, User } = db;
 
 module.exports = {
 	findSnap: (snapId) => {
 		return Snapshot.findByPk(snapId, {
-			attributes: ['path', 'postedBy', 'firstSolvedBy'],
+			attributes: ['path', 'solved'],
+			include: [
+				{
+					model: User,
+					as: 'poster',
+					attributes: ['username'],
+				},
+				{
+					model: User,
+					as: 'solver',
+					attributes: ['username'],
+				},
+			],
+			raw: true,
 		});
 	},
 
@@ -56,5 +69,12 @@ module.exports = {
 			where: { showId, createdAt: { [Op.lt]: thirtyDaysAgo } },
 			attributes: ['path'],
 		});
+	},
+
+	// Incrémente de 1 la colonne 'solved'
+	incrementCounter: async (snapId) => {
+		const snapFound = await Snapshot.findByPk(snapId);
+
+		return snapFound.increment(['solved'], { by: 1 });
 	},
 };

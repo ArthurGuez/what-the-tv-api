@@ -24,11 +24,13 @@ module.exports = (sequelize, DataTypes) => {
 				},
 			});
 			this.belongsTo(models.User, {
+				as: 'poster',
 				foreignKey: {
 					name: 'postedBy',
 				},
 			});
 			this.belongsTo(models.User, {
+				as: 'solver',
 				foreignKey: {
 					name: 'firstSolvedBy',
 				},
@@ -43,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
 			episodeId: DataTypes.UUID,
 			postedBy: DataTypes.UUID,
 			firstSolvedBy: DataTypes.UUID,
+			solved: DataTypes.INTEGER,
 		},
 		{
 			sequelize,

@@ -3,7 +3,9 @@ const express = require('express');
 const jwt = require('../utils/jwt');
 const snapsController = require('../controllers/snapshots');
 const usersController = require('../controllers/users');
-const { OK, NOT_FOUND } = require('../helpers/status_codes');
+
+const NotFoundError = require('../helpers/errors/not_found_error');
+const { OK, NO_CONTENT } = require('../helpers/status_codes');
 
 const router = express.Router();
 
@@ -14,14 +16,14 @@ router.get('/random', jwt.verifyToken, async (req, res) => {
 
 	const snapFound = await snapsController.findUnanswered(answered);
 
+	if (!snapFound) {
+		throw new NotFoundError(undefined, "You've found all our snapshots");
+	}
+
 	if (snapFound) {
 		res.status(OK).json({
 			id: snapFound.id,
 			path: snapFound.path,
-		});
-	} else {
-		res.status(NOT_FOUND).json({
-			message: "You've found all our snapshots",
 		});
 	}
 });
@@ -42,8 +44,9 @@ router.get('/:snapId', jwt.verifyToken, async (req, res) => {
 	if (snapFound) {
 		res.status(OK).json({
 			path: snapFound.path,
-			postedBy: snapFound.postedBy,
-			firstSolvedBy: snapFound.firstSolvedBy,
+			postedBy: snapFound['poster.username'],
+			firstSolvedBy: snapFound['solver.username'],
+			solved: snapFound.solved,
 		});
 	}
 });
@@ -58,7 +61,7 @@ router.get('/:showId', async (req, res) => {
 	}
 });
 
-router.post('/:snapId/guess', jwt.verifyToken, async (req, res) => {
+router.post('/guess/:snapId', jwt.verifyToken, async (req, res) => {
 	const { userId } = req.user;
 	const { snapId } = req.params;
 	const { guess } = req.body;
@@ -74,6 +77,20 @@ router.post('/:snapId/guess', jwt.verifyToken, async (req, res) => {
 		res.status(OK).json({
 			message: 'Wrong answer',
 		});
+	}
+});
+
+router.patch('/solved/:snapId', jwt.verifyToken, async (req, res) => {
+	const { snapId } = req.params;
+
+	const snapUpdated = await snapsController.incrementCounter(snapId);
+
+	if (!snapUpdated) {
+		throw new NotFoundError();
+	}
+
+	if (snapUpdated) {
+		res.status(NO_CONTENT).send();
 	}
 });
 
