@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/random', jwt.verifyToken, async (req, res) => {
 	const { userId } = req.user;
 
-	const answered = (await usersController.findAnswered(userId)).answered;
+	const answered = (await usersController.findAnsweredSnaps(userId)).answered;
 
 	const snapFound = await snapsController.findUnanswered(answered);
 
@@ -33,6 +33,25 @@ router.get('/mostrecent', jwt.verifyToken, async (req, res) => {
 
 	if (recentSnapsFound) {
 		res.status(OK).json(recentSnapsFound);
+	}
+});
+
+router.get('/checkstatus/:snapId', jwt.verifyToken, async (req, res) => {
+	const { userId } = req.user;
+	const { snapId } = req.params;
+
+	const answered = (await usersController.findAnsweredSnaps(userId)).answered;
+
+	const snapAnswered = answered.find((snap) => snap === snapId);
+
+	if (snapAnswered) {
+		res.status(OK).json({
+			answered: true,
+		});
+	} else {
+		res.status(OK).json({
+			answered: false,
+		});
 	}
 });
 

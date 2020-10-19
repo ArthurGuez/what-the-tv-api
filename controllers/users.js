@@ -46,7 +46,7 @@ module.exports = {
 		});
 	},
 
-	findAnswered: (userId) => {
+	findAnsweredSnaps: (userId) => {
 		return User.findByPk(userId, {
 			attributes: ['answered'],
 		});
