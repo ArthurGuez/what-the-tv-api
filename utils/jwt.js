@@ -20,8 +20,8 @@ module.exports = {
 
 	verifyToken: (req, res, next) => {
 		const authHeader = req.headers.authorization;
-
-		if (authHeader && authHeader.split(' ')[0] === 'Bearer') {
+		const bearer = authHeader.split(' ')[0];
+		if (authHeader && bearer === 'Bearer') {
 			const token = authHeader.split(' ')[1];
 			jwt.verify(token, secret, (err, user) => {
 				if (err) {

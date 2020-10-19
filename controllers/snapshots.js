@@ -29,6 +29,7 @@ module.exports = {
 		return Snapshot.findOne({
 			where: { id: { [Op.notIn]: answered } },
 			order: [[Sequelize.fn('RANDOM')]],
+			attributes: ['id'],
 		});
 	},
 

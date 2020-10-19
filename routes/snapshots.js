@@ -23,7 +23,6 @@ router.get('/random', jwt.verifyToken, async (req, res) => {
 	if (snapFound) {
 		res.status(OK).json({
 			id: snapFound.id,
-			path: snapFound.path,
 		});
 	}
 });
@@ -42,12 +41,18 @@ router.get('/checkstatus/:snapId', jwt.verifyToken, async (req, res) => {
 
 	const answered = (await usersController.findAnsweredSnaps(userId)).answered;
 
-	const snapAnswered = answered.find((snap) => snap === snapId);
+	if (answered) {
+		const snapAnswered = answered.find((snap) => snap === snapId);
 
-	if (snapAnswered) {
-		res.status(OK).json({
-			answered: true,
-		});
+		if (snapAnswered) {
+			res.status(OK).json({
+				answered: true,
+			});
+		} else {
+			res.status(OK).json({
+				answered: false,
+			});
+		}
 	} else {
 		res.status(OK).json({
 			answered: false,
@@ -88,28 +93,18 @@ router.post('/guess/:snapId', jwt.verifyToken, async (req, res) => {
 	const result = await snapsController.verifyGuess(snapId, guess);
 
 	if (result) {
-		await usersController.addAnswer(userId, snapId);
-		res.status(OK).json({
-			title: result,
-		});
+		const snapUpdated = await snapsController.incrementCounter(snapId);
+
+		if (snapUpdated) {
+			await usersController.addAnswer(userId, snapId);
+			res.status(OK).json({
+				title: result,
+			});
+		}
 	} else {
 		res.status(OK).json({
-			message: 'Wrong answer',
+			guess: false,
 		});
-	}
-});
-
-router.patch('/solved/:snapId', jwt.verifyToken, async (req, res) => {
-	const { snapId } = req.params;
-
-	const snapUpdated = await snapsController.incrementCounter(snapId);
-
-	if (!snapUpdated) {
-		throw new NotFoundError();
-	}
-
-	if (snapUpdated) {
-		res.status(NO_CONTENT).send();
 	}
 });
 
