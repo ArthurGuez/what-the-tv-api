@@ -1,12 +1,14 @@
 const express = require('express');
 
 const showsController = require('../controllers/shows');
-const { OK, CREATED, NOT_FOUND } = require('../helpers/status_codes');
+const NotFoundError = require('../helpers/errors/not_found_error');
+const { OK, CREATED } = require('../helpers/status_codes');
 const jwt = require('../utils/jwt');
 
 const router = express.Router();
 
-router.get('/find', jwt.verifyToken, async (req, res) => {
+router.post('/find', jwt.verifyToken, async (req, res) => {
+	console.log(req.body);
 	const { title } = req.body;
 
 	const showFound = await showsController.findShow(title);
@@ -18,9 +20,7 @@ router.get('/find', jwt.verifyToken, async (req, res) => {
 			tmdbId: showFound.tmdbId,
 		});
 	} else {
-		res.status(NOT_FOUND).json({
-			message: 'Show not found, please add it.',
-		});
+		throw new NotFoundError(undefined, "Oops, we can't find that show, why don't you add it?");
 	}
 });
 

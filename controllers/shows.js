@@ -15,7 +15,7 @@ module.exports = {
 
 	findShow: (title) => {
 		return Show.findOne({
-			where: { title: title },
+			where: { title },
 		});
 	},
 };
