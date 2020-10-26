@@ -22,12 +22,15 @@ router.get('/me', jwt.verifyToken, async (req, res) => {
 			},
 		});
 	} else {
-		throw new UnauthorizedError('Accès refusé', "Nous n'avons pas réussi à vous identifier");
+		throw new UnauthorizedError(
+			'Access Denied',
+			"We couldn't authenticate you, please check your credentials and try again."
+		);
 	}
 });
 
 router.post('/signup', async (req, res) => {
-	const { username, email, password, newsletter } = req.body;
+	const { username, email, password } = req.body;
 
 	validator.validateUsername(username);
 	validator.validatePassword(password);
@@ -59,7 +62,6 @@ router.post('/signin', async (req, res) => {
 				token: jwt.genToken(userFound),
 				user: {
 					username: userFound.username,
-					email: userFound.email,
 				},
 			});
 		} else {

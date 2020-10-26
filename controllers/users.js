@@ -42,7 +42,7 @@ module.exports = {
 
 	findUserByUsername: (username) => {
 		return User.findOne({
-			where: { username: username },
+			where: { username },
 		});
 	},
 
@@ -55,9 +55,7 @@ module.exports = {
 	checkUsername: (username) => {
 		return User.findOne({
 			attributes: ['username'],
-			where: {
-				username: username,
-			},
+			where: { username },
 		});
 	},
 
