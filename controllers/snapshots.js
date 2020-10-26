@@ -44,9 +44,10 @@ module.exports = {
 			})
 		).Show.title;
 
-		let guessLow = guess.toLowerCase();
+		const spaces = /\s/g;
+		const guessRevised = guess.toLowerCase().replace(spaces, '');
 
-		if (guessLow === showTitle) {
+		if (guessRevised === showTitle) {
 			return showTitle;
 		} else {
 			return false;
