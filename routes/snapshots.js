@@ -93,7 +93,7 @@ router.post('/guess/:snapId', jwt.verifyToken, async (req, res) => {
 	const result = await snapsController.verifyGuess(snapId, guess);
 
 	if (result) {
-		const snapUpdated = await snapsController.incrementCounter(snapId);
+		const snapUpdated = await snapsController.updateSnap(userId, snapId);
 
 		if (snapUpdated) {
 			await usersController.addAnswer(userId, snapId);

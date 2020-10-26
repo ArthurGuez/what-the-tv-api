@@ -43,6 +43,7 @@ module.exports = {
 					model: 'Users',
 					key: 'id',
 				},
+				onDelete: 'CASCADE',
 			},
 			firstSolvedBy: {
 				type: Sequelize.UUID,
@@ -50,6 +51,7 @@ module.exports = {
 					model: 'Users',
 					key: 'id',
 				},
+				onDelete: 'CASCADE',
 			},
 			solved: {
 				allowNull: false,

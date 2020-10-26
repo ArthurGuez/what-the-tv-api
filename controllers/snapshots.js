@@ -73,9 +73,13 @@ module.exports = {
 	},
 
 	// Incrémente de 1 la colonne 'solved'
-	incrementCounter: async (snapId) => {
+	updateSnap: async (userId, snapId) => {
 		const snapFound = await Snapshot.findByPk(snapId);
-
+		if (snapFound.firstSolvedBy === null) {
+			snapFound.update({
+				firstSolvedBy: userId,
+			});
+		}
 		return snapFound.increment(['solved'], { by: 1 });
 	},
 };

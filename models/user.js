@@ -11,9 +11,11 @@ module.exports = (sequelize, DataTypes) => {
 			this.hasMany(models.Snapshot, {
 				foreignKey: {
 					name: 'postedBy',
+					onDelete: 'cascade',
 				},
 				foreignKey: {
 					name: 'firstSolvedBy',
+					onDelete: 'cascade',
 				},
 			});
 
