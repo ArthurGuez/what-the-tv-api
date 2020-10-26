@@ -38,6 +38,8 @@ module.exports = {
 				type: Sequelize.BOOLEAN,
 			},
 			answered: {
+				allowNull: false,
+				defaultValue: [],
 				type: Sequelize.ARRAY(Sequelize.UUID),
 			},
 			createdAt: {
