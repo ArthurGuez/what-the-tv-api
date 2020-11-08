@@ -9,7 +9,6 @@ const { User } = db;
 module.exports = {
 	addUser: async (data) => {
 		const hashedPassword = await bcrypt.hash(data.password, 10);
-		console.log('anniv ', typeof data.birthday);
 
 		return User.create({
 			id: uuidv4(),

@@ -1,6 +1,7 @@
 const express = require('express');
 
-const usersValidator = require('../validators/users');
+const registerValidator = require('../validators/register');
+const loginValidator = require('../validators/login');
 const jwt = require('../utils/jwt');
 const usersController = require('../controllers/users');
 const ConflictError = require('../helpers/errors/conflict_error');
@@ -32,7 +33,7 @@ router.get('/me', jwt.verifyToken, async (req, res) => {
 router.post('/signup', async (req, res) => {
 	const { username } = req.body;
 
-	usersValidator(req.body);
+	registerValidator(req.body);
 
 	const userFound = await usersController.checkUsername(username);
 
@@ -50,6 +51,9 @@ router.post('/signup', async (req, res) => {
 
 router.post('/signin', async (req, res) => {
 	const { username, password } = req.body;
+
+	loginValidator(req.body);
+
 	const userFound = await usersController.findUserByUsername(username);
 
 	if (userFound) {
