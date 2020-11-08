@@ -35,6 +35,12 @@ module.exports = {
 					tmdbId: 1399,
 					addedBy: '93c2edcc-341b-42f0-92a2-e10e1e239bcd',
 				},
+				{
+					id: 'c4f250ec-3fdb-41ff-9a0e-67cec6dd15af',
+					title: 'twinpeaks',
+					tmdbId: 1920,
+					addedBy: '93c2edcc-341b-42f0-92a2-e10e1e239bcd',
+				},
 			],
 			{}
 		);

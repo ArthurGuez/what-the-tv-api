@@ -48,7 +48,7 @@ module.exports = {
 		const guessRevised = guess.toLowerCase().replace(spaces, '');
 
 		if (guessRevised === showTitle) {
-			return showTitle;
+			return true;
 		} else {
 			return false;
 		}

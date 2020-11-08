@@ -41,6 +41,12 @@ module.exports = {
 					title: 'Fire and Blood',
 					number: 10,
 				},
+				{
+					id: 'f727c5a9-7aff-4bf1-88a6-72aa1640d1b3',
+					seasonId: '9248bd54-b649-4b95-b035-697cf03010c1',
+					title: 'Beyond Life and Death',
+					number: 22,
+				},
 			],
 			{}
 		);

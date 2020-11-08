@@ -35,6 +35,11 @@ module.exports = {
 					showId: '5778aeb9-79d8-4fa6-a705-ab03f25da403',
 					number: 1,
 				},
+				{
+					id: '9248bd54-b649-4b95-b035-697cf03010c1',
+					showId: 'c4f250ec-3fdb-41ff-9a0e-67cec6dd15af',
+					number: 2,
+				},
 			],
 			{}
 		);

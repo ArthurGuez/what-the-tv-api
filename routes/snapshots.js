@@ -98,7 +98,7 @@ router.post('/guess/:snapId', jwt.verifyToken, async (req, res) => {
 		if (snapUpdated) {
 			await usersController.addAnswer(userId, snapId);
 			res.status(OK).json({
-				title: result,
+				guess: true,
 			});
 		}
 	} else {
