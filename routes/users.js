@@ -4,6 +4,7 @@ const registerValidator = require('../validators/register');
 const loginValidator = require('../validators/login');
 const jwt = require('../utils/jwt');
 const usersController = require('../controllers/users');
+const ValidationError = require('../helpers/errors/validation_error');
 const ConflictError = require('../helpers/errors/conflict_error');
 const NotFoundError = require('../helpers/errors/not_found_error');
 const UnauthorizedError = require('../helpers/errors/unauthorized_error');
@@ -33,7 +34,8 @@ router.get('/me', jwt.verifyToken, async (req, res) => {
 router.post('/signup', async (req, res) => {
 	const { username } = req.body;
 
-	registerValidator(req.body);
+	const errors = registerValidator(req.body);
+	if (errors) throw new ValidationError(errors);
 
 	const userFound = await usersController.checkUsername(username);
 

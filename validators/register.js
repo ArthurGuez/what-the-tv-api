@@ -1,62 +1,97 @@
 const { isNil } = require('lodash');
 
-const BadRequestError = require('../helpers/errors/bad_request_error');
-
 const USERNAME_REGEX = /^[a-zA-Z0-9_-]{1,12}$/;
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PASSWORD_REGEX = /^(?=.*\d).{6,20}$/;
 const COUNTRY_REGEX = /^[A-Za-zÀ-ÖØ-öø-ÿ -]+$/;
 const DATE_REGEX = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
 
-module.exports = (data) => {
-	const { username, email, password, birthday, country, gender, newsletter, terms } = data;
-
+const usernameValidation = (username) => {
 	if (
 		!USERNAME_REGEX.test(username) ||
 		username.length >= 13 ||
 		username.length < 1 ||
 		isNil(username)
 	) {
-		throw new BadRequestError(
-			'Bad Request',
-			'Username must be at least 1 character long & no longer than 12 characters'
-		);
+		return 'Username must be at least 1 character long & no longer than 12 characters';
 	}
+	return null;
+};
 
+const emailValidation = (email) => {
 	if (!EMAIL_REGEX.test(email) || email.length === 0 || isNil(email)) {
-		throw new BadRequestError('Bad Request', 'Email must not contain invalid characters');
+		return 'Email must not contain invalid characters';
 	}
-
+	return null;
+};
+const passwordValidation = (password) => {
 	if (!PASSWORD_REGEX.test(password) || password.length < 6 || isNil(password)) {
-		throw new BadRequestError(
-			'Bad Request',
-			'Password must not contain invalid characters and be 6 characters or more'
-		);
+		return 'Password must not contain invalid characters and be 6 characters or more';
 	}
+	return null;
+};
 
+const birthdayValidation = (birthday) => {
 	if (!DATE_REGEX.test(birthday) && birthday !== '' && !isNil(birthday)) {
-		throw new BadRequestError('Bad Request', 'Birthday must not contain invalid characters');
+		return 'Birthday must not contain invalid characters';
 	}
+};
 
+const countryValidation = (country) => {
 	if (!COUNTRY_REGEX.test(country) && country !== '') {
-		throw new BadRequestError('Bad Request', 'Country must not contain invalid characters');
+		return 'Country must not contain invalid characters';
 	}
-
+};
+const genderValidation = (gender) => {
 	if (
 		gender !== 'Male' &&
 		gender !== 'Female' &&
 		gender !== 'Other' &&
 		gender !== '' &&
-		!isNil(birthday)
+		!isNil(gender)
 	) {
-		throw new BadRequestError('Bad Request', 'Gender must not contain invalid characters');
+		return 'Gender must not contain invalid characters';
 	}
+};
 
+const newsletterValidation = (newsletter) => {
 	if (typeof newsletter !== 'boolean') {
-		throw new BadRequestError('Bad Request', 'Newsletter is invalid');
+		return 'Newsletter is invalid';
 	}
-
+};
+const termsValidation = (terms) => {
 	if (typeof terms !== 'boolean') {
-		throw new BadRequestError('Bad Request', 'Terms is invalid');
+		return 'Terms is invalid';
 	}
+};
+
+module.exports = (data) => {
+	const { username, email, password, birthday, country, gender, newsletter, terms } = data;
+	const errors = [];
+
+	const usernameError = usernameValidation(username);
+	if (usernameError) errors.push({ field: 'username', message: usernameError });
+
+	const emailError = emailValidation(email);
+	if (emailError) errors.push({ field: 'email', message: emailError });
+
+	const passwordError = passwordValidation(password);
+	if (passwordError) errors.push({ field: 'password', message: passwordError });
+
+	const birthdayError = birthdayValidation(birthday);
+	if (birthdayError) errors.push({ field: 'birthday', message: birthdayError });
+
+	const countryError = countryValidation(country);
+	if (countryError) errors.push({ field: 'country', message: countryError });
+
+	const genderError = genderValidation(gender);
+	if (genderError) errors.push({ field: 'gender', message: genderError });
+
+	const newsletterError = newsletterValidation(newsletter);
+	if (newsletterError) errors.push({ field: 'newsletter', message: newsletterError });
+
+	const termsError = termsValidation(terms);
+	if (termsError) errors.push({ field: 'terms', message: termsError });
+
+	return errors.length > 0 ? errors : null;
 };
