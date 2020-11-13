@@ -54,7 +54,8 @@ router.post('/signup', async (req, res) => {
 router.post('/signin', async (req, res) => {
 	const { username, password } = req.body;
 
-	loginValidator(req.body);
+	const errors = loginValidator(req.body);
+	if (errors) throw new ValidationError(errors);
 
 	const userFound = await usersController.findUserByUsername(username);
 

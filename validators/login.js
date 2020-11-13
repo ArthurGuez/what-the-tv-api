@@ -1,13 +1,9 @@
 const { isNil } = require('lodash');
 
-const BadRequestError = require('../helpers/errors/bad_request_error');
-
 const USERNAME_REGEX = /^[a-zA-Z0-9_-]{1,12}$/;
 const PASSWORD_REGEX = /^(?=.*\d).{6,20}$/;
 
-module.exports = (data) => {
-	const { username, password } = data;
-
+const usernameValidation = (username) => {
 	if (
 		!USERNAME_REGEX.test(username) ||
 		username.length >= 13 ||
@@ -15,10 +11,25 @@ module.exports = (data) => {
 		isNil(username) ||
 		username === ''
 	) {
-		throw new BadRequestError('Bad Request', 'Invalid username');
+		return 'Invalid username';
 	}
+	return null;
+};
 
+const passwordValidation = (password) => {
 	if (!PASSWORD_REGEX.test(password) || password.length < 6 || isNil(password) || password === '') {
-		throw new BadRequestError('Bad Request', 'Invalid password');
+		return 'Invalid password';
 	}
+	return null;
+};
+
+module.exports = (data) => {
+	const { username, password } = data;
+	const errors = [];
+
+	const usernameError = usernameValidation(username);
+	if (usernameError) errors.push({ field: 'username', message: usernameError });
+
+	const passwordError = passwordValidation(password);
+	if (passwordError) errors.push({ field: 'password', message: passwordError });
 };
