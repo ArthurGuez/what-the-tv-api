@@ -24,6 +24,12 @@ module.exports = (sequelize, DataTypes) => {
 					name: 'addedBy',
 				},
 			});
+
+			this.hasMany(models.Shout, {
+				foreignKey: {
+					name: 'userId',
+				},
+			});
 		}
 	}
 	User.init(
