@@ -32,4 +32,6 @@ module.exports = (data) => {
 
 	const passwordError = passwordValidation(password);
 	if (passwordError) errors.push({ field: 'password', message: passwordError });
+
+	return errors.length > 0 ? errors : null;
 };

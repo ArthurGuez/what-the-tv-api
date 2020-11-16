@@ -1,14 +1,21 @@
 module.exports = (error, req, res, next) => {
-	const { title } = error;
-	let { description } = error;
+	const { title, message } = error;
+	let { description, errors } = error;
 	const status = error.status || 500;
 
 	if (status === 500) {
 		description = 'Serveur cassé. Revenez plus tard.';
 	}
 
-	res.status(status).json({
-		title,
-		description,
-	});
+	if (error.name === 'ValidationError') {
+		res.status(status).json({
+			message,
+			errors,
+		});
+	} else {
+		res.status(status).json({
+			title,
+			description,
+		});
+	}
 };

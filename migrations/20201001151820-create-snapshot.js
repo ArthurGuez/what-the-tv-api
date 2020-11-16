@@ -51,7 +51,7 @@ module.exports = {
 					model: 'Users',
 					key: 'id',
 				},
-				onDelete: 'CASCADE',
+				onDelete: 'SET NULL',
 			},
 			solved: {
 				allowNull: false,
