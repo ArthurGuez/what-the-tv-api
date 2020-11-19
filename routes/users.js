@@ -56,7 +56,6 @@ router.post('/signin', async (req, res) => {
 
 	const errors = loginValidator(req.body);
 	if (errors) {
-		console.log({ errors });
 		throw new ValidationError(errors);
 	}
 
