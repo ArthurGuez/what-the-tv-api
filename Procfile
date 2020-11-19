@@ -1,1 +1,1 @@
-web: sequelize db:migrate:all && npx sequelize db:seed:all && node index.js 
+web: sequelize db:migrate && npx sequelize db:seed:all && node index.js 
